@@ -9,7 +9,7 @@
 *.userosscache
 *.sln.docstates
 
-!SFML_Project/SFML-2.5.1/*
+!SFML_Project/SFML-2.5.1/bin/*.dll
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
