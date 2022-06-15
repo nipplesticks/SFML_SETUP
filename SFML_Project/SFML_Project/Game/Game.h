@@ -1,8 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Entity.h"
 #include <deque>
 #include <mutex>
+#include "RenderObject.h"
+
+class StateHandler;
 
 class Game
 {
@@ -25,8 +27,6 @@ public:
   void Run();
   bool IsRunning();
   void Exit();
-  void Update(float dt, const sf::Vector2f& mousePosition);
-  void Draw(sf::RenderTarget* renderTarget_p);
   void PushEvent(sf::Event e);
   void HandleEvents();
   float GetFPS() const;
@@ -40,4 +40,5 @@ private:
   float myFps = 0.0f;
   float myMpf = 0.0f;
   std::deque<sf::Event> myEvents;
+  StateHandler* myStateHandler_p = nullptr;
 };

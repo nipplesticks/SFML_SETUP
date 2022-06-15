@@ -1,12 +1,25 @@
 #include "Game.h"
 #include "Utility/Timer.h"
+#include "States/StateHandler.h"
+#include "States/MainMenu.h"
+#include "Utility/Atlas.h"
+#include "Utility/Globals.h"
 
 Game::DrawQueue Game::GAME_DRAW_QUEUE;
 std::mutex Game::GAME_EVENT_LOCK;
+float Global::WIN_X = 0.0f;
+float Global::WIN_Y = 0.0f;
 
 Game::Game(sf::RenderTarget* renderTarget_p)
 {
+  Atlas::GetInstance()->LoadTexture("default_button", "Assets/Buttons/default_button.jpg");
+  Atlas::GetInstance()->LoadFont("default_font", "Assets/Fonts/defaultFont.TTF");
+
   myRenderTarget_p = renderTarget_p;
+
+
+  myStateHandler_p = StateHandler::GetInstance();
+  myStateHandler_p->PushState(new MainMenu);
 }
 
 Game::~Game()
@@ -43,11 +56,10 @@ void Game::Run()
     else
       mp = (sf::Vector2f)sf::Mouse::getPosition();
 
-    Update(dt, (sf::Vector2f)sf::Mouse::getPosition());
-
+    myStateHandler_p->Update(dt, mp);
     myRenderTarget_p->clear();
-
-    Draw(myRenderTarget_p);
+    myStateHandler_p->Draw(myRenderTarget_p);
+    GAME_DRAW_QUEUE.Flush(myRenderTarget_p);
 
     if ((sf::RenderWindow*)myRenderTarget_p)
       ((sf::RenderWindow*)myRenderTarget_p)->display();
@@ -76,16 +88,6 @@ void Game::Exit()
   myRequestedExit = true;
 }
 
-void Game::Update(float dt, const sf::Vector2f& mousePosition)
-{
-
-}
-
-void Game::Draw(sf::RenderTarget* renderTarget_p)
-{
-  GAME_DRAW_QUEUE.Flush(renderTarget_p);
-}
-
 void Game::PushEvent(sf::Event e)
 {
   GAME_EVENT_LOCK.lock();
@@ -106,8 +108,19 @@ void Game::HandleEvents()
     case sf::Event::GainedFocus:
       myLostFocus = false;
       break;
+    case sf::Event::MouseButtonReleased:
+    {
+      int asdsad = 123;
+      break;
+    }
     default:
       break;
+    }
+    
+    for (auto& s : EventSubscriber::SUBSCRIBERS[e.type])
+    {
+      if (s.second)
+        s.first->OnEvent(e);
     }
   }
   myEvents.clear();
@@ -144,7 +157,9 @@ void Game::DrawQueue::Flush(sf::RenderTarget* target_p)
   std::sort(queue.begin(), queue.end());
   for (size_t i = 0; i < nrOfObjectInQueue; i++)
   {
-    target_p->draw(*queue[i].GetDrawablePtr());
+    auto drawVec = queue[i].GetDrawables();
+    for (auto& d : *drawVec)
+      target_p->draw(*d);
   }
   nrOfObjectInQueue = 0;
 }

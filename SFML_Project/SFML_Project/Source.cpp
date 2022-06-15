@@ -1,12 +1,14 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include "Game/Game.h"
-
+#include "Game/Utility/Globals.h"
 
 int main()
 {
   std::string title = "SFML";
   sf::RenderWindow wnd(sf::VideoMode(1280, 720), title);
+  Global::WIN_X = 1280.f;
+  Global::WIN_Y = 720.f;
   wnd.setActive(false);
   Game app(&wnd);
 
@@ -19,6 +21,7 @@ int main()
     sf::Event e;
     while (wnd.pollEvent(e))
     {
+      app.PushEvent(e);
       switch (e.type)
       {
       case sf::Event::Closed:
@@ -27,7 +30,6 @@ int main()
         wnd.close();
         break;
       default:
-        app.PushEvent(e);
         break;
       }
     }

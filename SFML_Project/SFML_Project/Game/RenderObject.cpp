@@ -1,6 +1,11 @@
 #include "RenderObject.h"
 #include "Game.h"
 
+RenderObject::RenderObject(const std::vector<sf::Drawable*>& drawThis)
+{
+  SetDrawables(drawThis);
+}
+
 bool RenderObject::operator<(const RenderObject& other)
 {
     return myLayer < other.myLayer;
@@ -11,9 +16,9 @@ void RenderObject::PushToQueue()
   Game::GAME_DRAW_QUEUE.Push(*this);
 }
 
-const sf::RectangleShape* RenderObject::GetDrawablePtr() const
+const std::vector<sf::Drawable*>* RenderObject::GetDrawables() const
 {
-  return this;
+  return &myDrawables;
 }
 
 void RenderObject::SetLayer(int layer)
@@ -23,5 +28,10 @@ void RenderObject::SetLayer(int layer)
 
 int RenderObject::GetLayer() const
 {
-    return myLayer;
+  return myLayer;
+}
+
+void RenderObject::SetDrawables(const std::vector<sf::Drawable*>& drawThis)
+{
+  myDrawables = drawThis;
 }

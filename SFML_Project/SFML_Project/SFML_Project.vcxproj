@@ -132,15 +132,26 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Game\Entity.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\RenderObject.cpp" />
+    <ClCompile Include="Game\States\MainMenu.cpp" />
+    <ClCompile Include="Game\States\StateHandler.cpp" />
+    <ClCompile Include="Game\UI\Button.cpp" />
+    <ClCompile Include="Game\Utility\Atlas.cpp" />
+    <ClCompile Include="Game\Utility\EventSubscriber.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\UI\Button.h" />
     <ClInclude Include="Game\Game.h" />
-    <ClInclude Include="Game\Entity.h" />
     <ClInclude Include="Game\RenderObject.h" />
+    <ClInclude Include="Game\States\MainMenu.h" />
+    <ClInclude Include="Game\States\State.h" />
+    <ClInclude Include="Game\States\StateHandler.h" />
+    <ClInclude Include="Game\Utility\Atlas.h" />
+    <ClInclude Include="Game\Utility\EventSubscriber.h" />
+    <ClInclude Include="Game\Utility\Function.h" />
+    <ClInclude Include="Game\Utility\Globals.h" />
     <ClInclude Include="Game\Utility\Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
