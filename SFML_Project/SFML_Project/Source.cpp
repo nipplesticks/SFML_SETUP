@@ -2,53 +2,31 @@
 #include "Utility/Timer.h"
 
 
-int Run(sf::RenderWindow * wnd);
-
-
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+  sf::RenderWindow wnd(sf::VideoMode(1280, 720), "SFML");
+  sf::CircleShape c(64);
 
+  while (wnd.isOpen())
+  {
+    sf::Event e;
+    while (wnd.pollEvent(e))
+    {
+      switch (e.type)
+      {
+      case sf::Event::Closed:
+        wnd.close();
 
-	window.setActive(false);
+        break;
+      default:
+        break;
+      }
+    }
 
-	sf::Thread renderThread(&Run, &window);
-	renderThread.launch();
+    wnd.clear();
+    wnd.draw(c);
+    wnd.display();
+  }
 
-
-	while (window.isOpen())
-	{
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-	}
-
-
-	renderThread.terminate();
-
-	return 0;
-}
-
-int Run(sf::RenderWindow * wnd)
-{
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
-
-	wnd->setActive();
-
-	while (wnd->isOpen())
-	{
-
-
-
-
-		wnd->clear();
-		wnd->draw(shape);
-		wnd->display();
-	}
-
-	return 0;
+  return 0;
 }
