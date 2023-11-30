@@ -25,7 +25,7 @@ bld/
 [Ll]og/
 
 # Dont ignore bin folder please
-!SFML_Project/SFML-2.5.1/bin*
+!SFML_Project/SFML-2.6.1/bin*
 
 
 # Visual Studio 2015/2017 cache/options directory
