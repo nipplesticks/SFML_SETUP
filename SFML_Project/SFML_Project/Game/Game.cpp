@@ -19,7 +19,7 @@ Game::Game(sf::RenderTarget* renderTarget_p)
 
 
   myStateHandler_p = StateHandler::GetInstance();
-  myStateHandler_p->PushState(new MainMenu);
+  myStateHandler_p->PushState(new MainMenu());
 }
 
 Game::~Game()
@@ -39,10 +39,11 @@ void Game::Run()
   deltaTime.Start();
   while (!myRequestedExit)
   {
-    HandleEvents();
     float dt = (float)deltaTime.Stop();
     if (myLostFocus)
       continue;
+
+    HandleEvents();
 
     frames++;
     fpsTimer += dt;
@@ -57,6 +58,7 @@ void Game::Run()
       mp = (sf::Vector2f)sf::Mouse::getPosition();
 
     myStateHandler_p->Update(dt, mp);
+    
     myRenderTarget_p->clear();
     myStateHandler_p->Draw(myRenderTarget_p);
     GAME_DRAW_QUEUE.Flush(myRenderTarget_p);
@@ -94,7 +96,7 @@ void Game::PushEvent(sf::Event e)
   myEvents.push_back(e);
   GAME_EVENT_LOCK.unlock();
 }
-
+#include <iostream>
 void Game::HandleEvents()
 {
   GAME_EVENT_LOCK.lock();
@@ -110,18 +112,23 @@ void Game::HandleEvents()
       break;
     case sf::Event::MouseButtonReleased:
     {
-      int asdsad = 123;
       break;
     }
     default:
       break;
     }
     
+    std::vector<uint64_t> idsToErease;
     for (auto& s : EventSubscriber::SUBSCRIBERS[e.type])
     {
-      if (s.second)
-        s.first->OnEvent(e);
+      if (s.first && s.second)
+        s.second->OnEvent(e);
+      else if (s.second == nullptr)
+        idsToErease.push_back(s.first);
     }
+
+    for (auto id : idsToErease)
+      EventSubscriber::SUBSCRIBERS[e.type].erase(EventSubscriber::SUBSCRIBERS[e.type].find(id));
   }
   myEvents.clear();
   GAME_EVENT_LOCK.unlock();

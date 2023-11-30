@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\RenderObject.cpp" />
+    <ClCompile Include="Game\States\GameState.cpp" />
     <ClCompile Include="Game\States\MainMenu.cpp" />
     <ClCompile Include="Game\States\StateHandler.cpp" />
     <ClCompile Include="Game\UI\Button.cpp" />
@@ -142,6 +143,7 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\States\GameState.h" />
     <ClInclude Include="Game\UI\Button.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\RenderObject.h" />

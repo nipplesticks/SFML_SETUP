@@ -17,7 +17,7 @@ public:
   template <typename C, typename A>
   void Bind(void(C::* function)(A), C* object, A argument);
 
-  ~Button();
+  virtual ~Button();
 
   virtual void OnEvent(const sf::Event& e) override;
 

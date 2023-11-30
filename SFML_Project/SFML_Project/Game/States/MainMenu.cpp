@@ -1,10 +1,17 @@
 #include "MainMenu.h"
 #include <iostream>
 #include "../Utility/Globals.h"
+#include "GameState.h"
+#include "StateHandler.h"
 
 #define START_BUTTON 0
 #define OPTION_BUTTON (START_BUTTON + 1)
 #define EXIT_BUTTON (OPTION_BUTTON + 1)
+
+void _pushGameState()
+{
+  StateHandler::GetInstance()->PopAndPush(new GameState());
+}
 
 MainMenu::MainMenu() : State()
 {
@@ -12,14 +19,16 @@ MainMenu::MainMenu() : State()
   myButtons.push_back(Button());
   myButtons.push_back(Button());
   
-  myButtons[START_BUTTON].Bind(&MainMenu::TestPrint, this, std::string("Start Button Pressed"));
+  myButtons[START_BUTTON].Bind(_pushGameState);
   myButtons[START_BUTTON].SetString("Start Game");
   myButtons[START_BUTTON].SetupTextColors(sf::Color::Black, sf::Color::Green, sf::Color::Red);
   myButtons[START_BUTTON].setOrigin(myButtons[START_BUTTON].getSize() * 0.5f);
+
   myButtons[OPTION_BUTTON].Bind(&MainMenu::TestPrint, this, std::string("Option Button Pressed"));
   myButtons[OPTION_BUTTON].SetString("Options");
   myButtons[OPTION_BUTTON].SetupTextColors(sf::Color::Black, sf::Color::Green, sf::Color::Red);
   myButtons[OPTION_BUTTON].setOrigin(myButtons[START_BUTTON].getSize() * 0.5f);
+
   myButtons[EXIT_BUTTON].Bind(&MainMenu::TestPrint, this, std::string("Exit Button Pressed"));
   myButtons[EXIT_BUTTON].SetString("Exit");
   myButtons[EXIT_BUTTON].SetupTextColors(sf::Color::Black, sf::Color::Green, sf::Color::Red);
@@ -32,6 +41,7 @@ MainMenu::MainMenu() : State()
 
 MainMenu::~MainMenu()
 {
+
 }
 
 void MainMenu::Update(float dt, const sf::Vector2f& mousePosition)
@@ -74,4 +84,12 @@ void MainMenu::UpdateUI()
   myButtons[OPTION_BUTTON].setPosition(winCenter);
   myButtons[START_BUTTON].setPosition(winCenter - sf::Vector2f(0.0f, myButtons[START_BUTTON].getSize().y * 1.5f));
   myButtons[EXIT_BUTTON].setPosition(winCenter + sf::Vector2f(0.0f, myButtons[START_BUTTON].getSize().y * 1.5f));
+}
+
+void MainMenu::PreUpdate(float dt, const sf::Vector2f& mousePosition)
+{
+}
+
+void MainMenu::LateUpdate(float dt, const sf::Vector2f& mousePosition)
+{
 }

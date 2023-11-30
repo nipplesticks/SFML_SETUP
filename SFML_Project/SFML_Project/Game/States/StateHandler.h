@@ -22,6 +22,8 @@ public:
 private:
   static StateHandler gState;
   std::stack<State*> myStateStack;
+  float myLastDeltaTime = 0.0f;
+  sf::Vector2f myLastMousePosition;
 
 };
 

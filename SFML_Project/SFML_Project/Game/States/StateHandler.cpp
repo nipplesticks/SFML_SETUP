@@ -28,9 +28,12 @@ void StateHandler::PopAndPush(State* newState_p)
 
 void StateHandler::Update(float dt, const sf::Vector2f& mousePosition)
 {
+  myLastDeltaTime = dt;
+  myLastMousePosition = mousePosition;
   if (!IsEmpty())
   {
-    myStateStack.top()->Update(dt, mousePosition);
+    myStateStack.top()->PreUpdate(myLastDeltaTime, myLastMousePosition);
+    myStateStack.top()->Update(myLastDeltaTime, myLastMousePosition);
   }
 }
 
@@ -39,6 +42,7 @@ void StateHandler::Draw(sf::RenderTarget* renderTarget_p)
   if (!IsEmpty())
   {
     myStateStack.top()->Draw();
+    myStateStack.top()->LateUpdate(myLastDeltaTime, myLastMousePosition);
   }
 }
 
